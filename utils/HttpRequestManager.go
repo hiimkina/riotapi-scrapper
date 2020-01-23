@@ -8,10 +8,10 @@ import (
 )
 
 func DoHttpRequest ( apiEndpoint string ) string {
-    apiToken := "RGAPI-80136d22-3d28-43ff-a80c-fee11ce34569"
+    apiToken := "RGAPI-5f0536dc-e07f-4970-a64e-2162b8affd4f"
     req, err := http.NewRequest("GET", apiEndpoint, nil)
     if err != nil {
-        log.Fatal("Error generating HTTP request")
+        log.Fatal("Error generating HTTP request: \n%s", apiEndpoint)
     }
     req.Header.Set("X-Riot-Token", apiToken)
 
@@ -22,7 +22,7 @@ func DoHttpRequest ( apiEndpoint string ) string {
     }
 
     if response.StatusCode != http.StatusOK {
-        log.Fatal("Error in your request: %s", response.StatusCode)
+        log.Fatal("Error in your request: ", apiEndpoint, " Error code: ", response.Body)
     }
 
     bodyBytes, err := ioutil.ReadAll(response.Body)

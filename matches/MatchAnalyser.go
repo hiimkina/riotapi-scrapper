@@ -4,6 +4,7 @@ import (
     "encoding/json"
     "github.com/hiimkina/riotapi-scrapper/utils"
     "log"
+    "strconv"
 )
 
 type ChampionBan struct {
@@ -39,8 +40,8 @@ type PlayerAdvancedStats struct {
     FirstBloodKill bool
     FirstTowerAssist bool
     FirstTowerKill bool
-    GoldEarned bool
-    GoldSpent bool
+    GoldEarned int
+    GoldSpent int
     InhibitorKills int
     Item0 int
     Item1 int
@@ -140,7 +141,7 @@ type TeamDetails struct {
     FirstDragon bool
     Bans []ChampionBan
     FirstInhibitor bool
-    Win bool
+    Win string
     FirstRiftHerald bool
     FirstBaron bool
     BaronKills int
@@ -153,15 +154,15 @@ type TeamDetails struct {
     DragonKills int
 }
 
-func GetMatch ( matchId int ) *PlayerHistory {
-    apiEndpoint :=  "https://euw1.api.riotgames.com/lol/match/v4/matches/" + string(matchId)
+func GetMatch ( matchId int ) *MatchDetails {
+    apiEndpoint :=  "https://euw1.api.riotgames.com/lol/match/v4/matches/" + strconv.Itoa(matchId)
 
     stringOutput := utils.DoHttpRequest(apiEndpoint)
-    history := new(PlayerHistory)
-    err := json.Unmarshal([]byte(stringOutput), &history)
+    matchDetails := new(MatchDetails)
+    err := json.Unmarshal([]byte(stringOutput), &matchDetails)
     if err != nil {
-        log.Fatal("Error converting JSON to struct in GetMatch")
+        log.Fatal("Error converting JSON to struct in GetMatch: \n", err)
     }
 
-    return history
+    return matchDetails
 }

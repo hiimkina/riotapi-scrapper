@@ -15,8 +15,12 @@ func main () {
         summonerToScrap := new(summoners.Summoner)
         summonerToScrap = summoners.GetSummonerFromId(summonersGathered[i].SummonerId)
 
-        history := new(matches.PlayerHistory)
-        history = matches.FillPlayerHistory(summonerToScrap.AccountId)
+        //history := new(matches.PlayerHistory)
+        history := matches.FillPlayerHistory(summonerToScrap.AccountId)
+
+        matchStats := matches.GetMatch(history.Matches[0].GameId)
+
+        fmt.Printf("%+v", matchStats)
     }
 
 }
