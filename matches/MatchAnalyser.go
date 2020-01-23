@@ -3,6 +3,7 @@ package matches
 import (
     "encoding/json"
     "github.com/hiimkina/riotapi-scrapper/utils"
+    "log"
 )
 
 type ChampionBan struct {
@@ -152,12 +153,15 @@ type TeamDetails struct {
     DragonKills int
 }
 
-func GetMatch ( matchId int ) {
-    apiEndpoint :=  "https://euw1.api.riotgames.com/lol/match/v4/matches/" + matchId
+func GetMatch ( matchId int ) *PlayerHistory {
+    apiEndpoint :=  "https://euw1.api.riotgames.com/lol/match/v4/matches/" + string(matchId)
 
     stringOutput := utils.DoHttpRequest(apiEndpoint)
     history := new(PlayerHistory)
-    json.Unmarshal([]byte(stringOutput), &history)
+    err := json.Unmarshal([]byte(stringOutput), &history)
+    if err != nil {
+        log.Fatal("Error converting JSON to struct in GetMatch")
+    }
 
     return history
 }

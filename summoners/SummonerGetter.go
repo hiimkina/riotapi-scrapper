@@ -3,6 +3,7 @@ package summoners
 import (
     "encoding/json"
     "github.com/hiimkina/riotapi-scrapper/utils"
+    "log"
 )
 
 type RankedInfo struct {
@@ -30,7 +31,10 @@ func GetSummonerFromName ( summonerName string ) *Summoner {
 
     stringOutput := utils.DoHttpRequest(apiEndpoint)
     summoner := new(Summoner)
-    json.Unmarshal([]byte(stringOutput), &summoner)
+    err := json.Unmarshal([]byte(stringOutput), &summoner)
+    if err != nil {
+        log.Fatal("Error converting JSON to struct in GetMatch")
+    }
     summoner = getSummonerRankedInfo(summoner)
 
     return summoner
@@ -41,7 +45,10 @@ func GetSummonerFromId ( summonerId string ) *Summoner {
 
     stringOutput := utils.DoHttpRequest(apiEndpoint)
     summoner := new(Summoner)
-    json.Unmarshal([]byte(stringOutput), &summoner)
+    err := json.Unmarshal([]byte(stringOutput), &summoner)
+    if err != nil {
+        log.Fatal("Error converting JSON to struct in GetMatch")
+    }
     summoner = getSummonerRankedInfo(summoner)
 
     return summoner
@@ -52,7 +59,10 @@ func getSummonerRankedInfo ( summoner *Summoner ) *Summoner {
 
     stringOutput := utils.DoHttpRequest(apiEndpoint)
     var rankedQueues []RankedInfo
-    json.Unmarshal([]byte(stringOutput), &rankedQueues)
+    err := json.Unmarshal([]byte(stringOutput), &rankedQueues)
+    if err != nil {
+        log.Fatal("Error converting JSON to struct in GetMatch")
+    }
     summoner.Ranks = rankedQueues
 
     return summoner

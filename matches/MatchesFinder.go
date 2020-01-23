@@ -3,6 +3,7 @@ package matches
 import (
     "encoding/json"
     "github.com/hiimkina/riotapi-scrapper/utils"
+    "log"
 )
 
 type Match struct {
@@ -25,7 +26,10 @@ func FillPlayerHistory ( accountId string ) *PlayerHistory {
 
     stringOutput := utils.DoHttpRequest(apiEndpoint)
     history := new(PlayerHistory)
-    json.Unmarshal([]byte(stringOutput), &history)
+    err := json.Unmarshal([]byte(stringOutput), &history)
+    if err != nil {
+        log.Fatal("Error converting JSON to struct in GetMatch")
+    }
 
     return history
 }
